@@ -18,7 +18,7 @@ import cameron from  '../../assets/cameron.png'
 
 const Sidebar = ({Sidebar}) => {
   return (
-    <div className='Sidebar'>
+    <div className={`Sidebar ${Sidebar ? '' : 'small-sidebar'}`}>
         <div className='sortcut-links'>
             <div className='side-link'>
                 <img src={home} alt="" /><p>Home</p>
