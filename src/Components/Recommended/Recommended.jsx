@@ -1,90 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Recommended.css'
 
-import thumbnail1 from '../../assets/thumbnail1.png'
-import thumbnail2 from '../../assets/thumbnail2.png'
-import thumbnail3 from '../../assets/thumbnail3.png'
-import thumbnail4 from '../../assets/thumbnail4.png'
-import thumbnail5 from '../../assets/thumbnail5.png'
-import thumbnail6 from '../../assets/thumbnail6.png'
-import thumbnail7 from '../../assets/thumbnail7.png'
-import thumbnail8 from '../../assets/thumbnail8.png'
+import { API_KEY } from '../../data'
 
-const Recommended = () => {
+const Recommended = ({ videoId }) => {
+  const [apiData, setApidata] = useState([])
+
+  const fetchData = async () => {
+    if (!videoId) {
+      setApidata([])
+      return
+    }
+
+    const relatedVideoUrl = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&maxResults=20&key=${API_KEY}`
+    const response = await fetch(relatedVideoUrl)
+    const data = await response.json()
+    setApidata(data.items || [])
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [videoId])
+
   return (
-    <div className='recommended'>
-        <div className="side-video-list">
-            <img src={thumbnail1} alt="" />
+    <div>
+      {apiData.map((item, index) => (
+        <div key={item.id?.videoId || index} className='recommended'>
+          <div className="side-video-list">
+            {item?.snippet?.thumbnails?.medium?.url ? (
+              <img src={item.snippet.thumbnails.medium.url} alt={item?.snippet?.title || ''} />
+            ) : null}
             <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
+              <h4>{item?.snippet?.title || ''}</h4>
+              <p>{item?.snippet?.channelTitle || ''}</p>
             </div>
+          </div>
         </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail2} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail3} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail4} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail5} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail6} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail7} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-
-        <div className="side-video-list">
-            <img src={thumbnail8} alt="" />
-            <div className="vid-info">
-                <h4>Best Channal that help you to be a Great web developer</h4>
-                <p>Ansari.Tech</p>
-                <p>199k views</p>
-            </div>
-        </div>
-      
+      ))}
     </div>
   )
 }
