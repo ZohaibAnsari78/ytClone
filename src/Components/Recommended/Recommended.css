@@ -3,8 +3,12 @@
 }
 .side-video-list{
     display: flex;
+    width: 100%;
     justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 8px;
+    text-decoration: none;
+    color: inherit;
 }
 .side-video-list img{
     flex-basis: 49%;

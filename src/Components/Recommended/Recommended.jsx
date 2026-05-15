@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Recommended.css'
 
 import { API_KEY } from '../../data'
 
-const Recommended = ({ videoId }) => {
+const Recommended = ({ videoId, categoryId }) => {
   const [apiData, setApidata] = useState([])
 
   const fetchData = async () => {
@@ -26,7 +27,10 @@ const Recommended = ({ videoId }) => {
     <div>
       {apiData.map((item, index) => (
         <div key={item.id?.videoId || index} className='recommended'>
-          <div className="side-video-list">
+          <Link
+            to={`/video/${categoryId || 0}/${item.id?.videoId || ''}`}
+            className="side-video-list"
+          >
             {item?.snippet?.thumbnails?.medium?.url ? (
               <img src={item.snippet.thumbnails.medium.url} alt={item?.snippet?.title || ''} />
             ) : null}
@@ -34,7 +38,7 @@ const Recommended = ({ videoId }) => {
               <h4>{item?.snippet?.title || ''}</h4>
               <p>{item?.snippet?.channelTitle || ''}</p>
             </div>
-          </div>
+          </Link>
         </div>
       ))}
     </div>
